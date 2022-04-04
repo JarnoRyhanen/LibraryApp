@@ -2,7 +2,7 @@ package com.home.libraryapp.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.home.libraryapp.api.Book
+import com.home.libraryapp.api.BookObject
 import com.home.libraryapp.api.BooksApi
 import retrofit2.HttpException
 import java.io.IOException
@@ -12,13 +12,13 @@ private const val BOOK_STARTING_PAGE_INDEX = 1
 class BookPagingSource(
     private val booksApi: BooksApi,
     private val query: String
-) : PagingSource<Int, Book>() {
+) : PagingSource<Int, BookObject>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookObject> {
         val position = params.key ?: BOOK_STARTING_PAGE_INDEX
 
         return try {
-            val response = booksApi.searchNews(query, position, params.loadSize, "book")
+            val response = booksApi.searchNews(query, position, params.loadSize, "books")
             val books = response.items
 
             LoadResult.Page(
@@ -33,7 +33,7 @@ class BookPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Book>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, BookObject>): Int? {
         TODO("Not yet implemented")
     }
 }

@@ -12,7 +12,7 @@ class BookRepository @Inject constructor(
 fun getSearchResults(query: String) =
     Pager(
         config = PagingConfig(
-            pageSize = 20,
+            pageSize = 10,
             maxSize = 40,
             enablePlaceholders = false
         ),

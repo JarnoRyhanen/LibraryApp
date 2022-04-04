@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Book(
+data class BookObject(
     val id: String,
     val volumeInfo: VolumeInfo
 ) : Parcelable {
@@ -16,9 +16,9 @@ data class Book(
         val publishedDate: String,
         val description: String?,
         val pageCount: Int,
-        val averageRating: Int?,
+        val averageRating: Float?,
         val ratingsCount: Int?,
-        val imageLinks: ImageLinks,
+        val imageLinks: ImageLinks?,
         val language: String,
         val previewLink: String,
         val infoLink: String,
