@@ -30,8 +30,7 @@ class BookViewHolder(
             titleTextView.text = bookObject.volumeInfo.title
             textViewAuthor.text = bookObject.volumeInfo.subtitle
             dataTextView.text = String.format(
-                bookObject.volumeInfo.publishedDate + ", "
-                        + bookObject.volumeInfo.language
+                bookObject.volumeInfo.publishedDate
             )
             if (bookObject.volumeInfo.averageRating != null) {
                 ratingTextView.text = String.format("${bookObject.volumeInfo.averageRating}/5")

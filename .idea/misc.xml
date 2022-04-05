@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/layout/book_load_state_footer.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/layout/fragment_book_search.xml" value="0.2" />
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/layout/fragment_books_recommendations.xml" value="0.264" />
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/layout/item_book.xml" value="0.264" />
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/menu/bottom_nav.xml" value="0.39692307692307693" />
         <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/menu/menu_bottom_nav.xml" value="0.39692307692307693" />
+        <entry key="..\:/Users/s1800885/Documents/LibraryApp/app/src/main/res/menu/menu_search.xml" value="0.21666666666666667" />
       </map>
     </option>
   </component>
