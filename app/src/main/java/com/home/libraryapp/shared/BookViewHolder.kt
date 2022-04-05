@@ -45,13 +45,11 @@ class BookViewHolder(
             dataTextView.text = String.format(
                 bookObject.volumeInfo.publishedDate +
                         if (!bookObject.volumeInfo.industryIdentifiers.isNullOrEmpty()) {
-                            for (index in bookObject.volumeInfo.industryIdentifiers.indices) {
-                                if (bookObject.volumeInfo.industryIdentifiers[index].type == "ISBN_13") {
-                                    industryIdentifier =
-                                       "ISBN " + bookObject.volumeInfo.industryIdentifiers[index].identifier
-                                }else if (bookObject.volumeInfo.industryIdentifiers[index].type == "OTHER"){
-                                    industryIdentifier =
-                                        bookObject.volumeInfo.industryIdentifiers[index].identifier
+                            bookObject.volumeInfo.industryIdentifiers.indices.forEach { index ->
+                                if (bookObject.volumeInfo.industryIdentifiers[index].type == "ISBN_13") ("ISBN " + bookObject.volumeInfo.industryIdentifiers[index].identifier).also {
+                                    industryIdentifier = it
+                                } else if (bookObject.volumeInfo.industryIdentifiers[index].type == "OTHER") bookObject.volumeInfo.industryIdentifiers[index].identifier.also {
+                                    industryIdentifier = it
                                 }
                             }
                             if (industryIdentifier != "") ", $industryIdentifier" else ""

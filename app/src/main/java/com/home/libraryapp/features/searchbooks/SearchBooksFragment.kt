@@ -39,7 +39,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
                 )
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(requireContext())
-                itemAnimator?.changeDuration = 0
+                itemAnimator = null
             }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.books.collectLatest {
@@ -47,6 +47,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
                 }
             }
             bookAdapter.addLoadStateListener { loadState ->
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 recyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
                 buttonRetry.isVisible = loadState.source.refresh is LoadState.Error
                 textViewError.isVisible = loadState.source.refresh is LoadState.Error
