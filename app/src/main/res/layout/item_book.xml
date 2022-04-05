@@ -10,13 +10,13 @@
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
+        android:maxWidth="200dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:scaleType="fitCenter"
-        tools:src="@tools:sample/backgrounds/scenic"
         />
 
     <LinearLayout
@@ -66,15 +66,31 @@
             tools:text="Paperback, 2022, English, ISBN 9780765365293"
             />
 
-        <TextView
-            android:id="@+id/rating_text_view"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            tools:text="Rating: 4/5"
-            />
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
+            <TextView
+                android:id="@+id/rating_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                tools:text="Rating: 4/5"
+                />
+
+            <ImageView
+                android:id="@+id/image_view_rating"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                tools:src="@drawable/five_out_of_five"
+                />
+        </LinearLayout>
     </LinearLayout>
 
     <View

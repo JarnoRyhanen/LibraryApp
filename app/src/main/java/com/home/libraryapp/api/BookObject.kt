@@ -13,7 +13,9 @@ data class BookObject(
     data class VolumeInfo(
         val title: String,
         val subtitle: String?,
+        val authors: List<String>,
         val publishedDate: String,
+        val industryIdentifiers: List<IndustryIdentifiers>?,
         val description: String?,
         val pageCount: Int,
         val averageRating: Float?,
@@ -29,6 +31,12 @@ data class BookObject(
         data class ImageLinks(
             val smallThumbnail: String?,
             val thumbnail: String?
+        ) : Parcelable
+
+        @Parcelize
+        data class IndustryIdentifiers(
+            val type: String,
+            val identifier: String
         ) : Parcelable
     }
 }
