@@ -1,7 +1,5 @@
 package com.home.libraryapp.di
 
-import android.app.Application
-import androidx.room.Room
 import com.home.libraryapp.api.BooksApi
 import dagger.Module
 import dagger.Provides

@@ -1,6 +1,7 @@
 package com.home.libraryapp.features.searchbooks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -9,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.home.libraryapp.R
 import com.home.libraryapp.databinding.FragmentBookSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlin.math.log
 
 @AndroidEntryPoint
 class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
@@ -29,7 +32,12 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
 
         currentBinding = FragmentBookSearchBinding.bind(view)
 
-        val bookAdapter = BookAdapter()
+        val bookAdapter = BookAdapter(
+            onItemClick = { bookObject ->
+                val action = SearchBooksFragmentDirections.actionSearchBooksFragmentToDetailsFragment(bookObject)
+                findNavController().navigate(action)
+            }
+        )
 
         binding.apply {
             recyclerView.apply {
@@ -42,7 +50,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
                 itemAnimator = null
             }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.books.collectLatest {
+                viewModel.books.collect {
                     bookAdapter.submitData(it)
                 }
             }

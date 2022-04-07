@@ -21,7 +21,6 @@ data class BookObject(
         val averageRating: Float?,
         val ratingsCount: Int?,
         val imageLinks: ImageLinks?,
-        val language: String,
         val previewLink: String,
         val infoLink: String,
         val canonicalVolumeLink: String

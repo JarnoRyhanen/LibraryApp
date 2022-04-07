@@ -17,7 +17,7 @@ class BookPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookObject> {
         val position = params.key ?: BOOK_STARTING_PAGE_INDEX
-
+        Log.d("searchbooksfragment", "onViewCreated: THIS FRAGMENT IS RECREATED")
         val startIndex = if (position == 1) {
             0
         } else {

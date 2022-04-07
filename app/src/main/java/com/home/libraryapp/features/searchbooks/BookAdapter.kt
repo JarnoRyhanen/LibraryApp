@@ -8,11 +8,19 @@ import com.home.libraryapp.databinding.ItemBookBinding
 import com.home.libraryapp.shared.BookComparator
 import com.home.libraryapp.shared.BookViewHolder
 
-class BookAdapter : PagingDataAdapter<BookObject, BookViewHolder>(BookComparator()) {
+class BookAdapter(
+    private val onItemClick: (BookObject) -> Unit
+) : PagingDataAdapter<BookObject, BookViewHolder>(BookComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookViewHolder(binding)
+        return BookViewHolder(binding,
+            onItemClick = { position ->
+                val book = getItem(position)
+                if (book != null) {
+                    onItemClick(book)
+                }
+            })
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {

@@ -11,13 +11,22 @@ import com.home.libraryapp.databinding.ItemBookBinding
 private const val TAG = "BookViewHolder"
 
 class BookViewHolder(
-    private val binding: ItemBookBinding
+    private val binding: ItemBookBinding,
+    private val onItemClick: (Int) -> Unit
 ) :
     RecyclerView.ViewHolder(binding.root) {
 
+    init {
+        binding.root.setOnClickListener {
+            val position = bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onItemClick(position)
+            }
+        }
+    }
+
     fun bind(bookObject: BookObject) {
         binding.apply {
-
             val uri = bookObject.volumeInfo.imageLinks?.thumbnail
                 ?: bookObject.volumeInfo.imageLinks?.smallThumbnail
                 ?: ""
@@ -27,7 +36,7 @@ class BookViewHolder(
             Glide.with(itemView)
                 .load(fixedUri)
                 .fitCenter()
-                .error(R.drawable.img)
+                .error(R.drawable.cover_not_found)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageView)
 
@@ -58,7 +67,6 @@ class BookViewHolder(
                         }
             )
 
-            Log.d("vievholder", "bind: ${bookObject.volumeInfo.title}")
             if (bookObject.volumeInfo.averageRating != null) {
                 ratingTextView.text = String.format("${bookObject.volumeInfo.averageRating}/5")
                 when (bookObject.volumeInfo.averageRating) {
@@ -77,4 +85,6 @@ class BookViewHolder(
             }
         }
     }
+
+
 }

@@ -11,11 +11,27 @@
         android:name="com.home.libraryapp.features.searchbooks.SearchBooksFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_book_search"
-        />
+        >
+        <action
+            android:id="@+id/action_searchBooksFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/recommendationsFragment"
         android:name="com.home.libraryapp.features.recommendations.RecommendationsFragment"
         android:label="@string/recommendations"
         tools:layout="@layout/fragment_books_recommendations"
         />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.home.libraryapp.features.details.DetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_details"
+        >
+        <argument
+            android:name="book"
+            app:argType="com.home.libraryapp.api.BookObject"
+            />
+    </fragment>
 </navigation>
