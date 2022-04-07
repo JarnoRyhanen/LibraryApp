@@ -22,6 +22,7 @@ buildscript {
         testExtJunitVersion = "1.1.3"
         glideVersion = '4.13.1'
         retrofitVersion = '2.9.0'
+        cardViewVersion = "1.0.0"
     }
 
     repositories {

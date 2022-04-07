@@ -8,12 +8,12 @@ data class BookObject(
     val id: String,
     val volumeInfo: VolumeInfo
 ) : Parcelable {
-    //TODO add authors and industryIdentifiers
     @Parcelize
     data class VolumeInfo(
         val title: String,
         val subtitle: String?,
         val authors: List<String>,
+        val publisher: String,
         val publishedDate: String,
         val industryIdentifiers: List<IndustryIdentifiers>?,
         val description: String?,

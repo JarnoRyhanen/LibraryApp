@@ -27,6 +27,6 @@ class SearchBooksViewModel @Inject constructor(
     }
 
     companion object {
-        private const val DEFAULT_QUERY = "Brandon Sanderson"
+        private const val DEFAULT_QUERY = "Harry potter"
     }
 }

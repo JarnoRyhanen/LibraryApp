@@ -7,7 +7,7 @@
     tools:context=".features.details.DetailsFragment"
     >
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -61,7 +61,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 tools:text="Authors: Brandon Sanderson"
                 />
 
@@ -74,12 +74,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/rating"
+                android:textSize="16sp"
                 android:textColor="@color/black"
                 />
 
             <ImageView
                 android:id="@+id/book_rating_image"
-                android:layout_width="70dp"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_below="@id/book_author"
                 android:layout_marginStart="8dp"
@@ -97,23 +98,152 @@
                 android:background="#C2CACF"
                 />
 
-            <TextView
-                android:id="@+id/book_description"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/book_description_card_view"
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/book_rating"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/black"
-                tools:text="From #1 New York Times bestselling author Brandon Sanderson, The Way of Kings, Book One of the Stormlight Archive begins an incredible new saga of epic proportion. Roshar is a world of stone and storms. Uncanny tempests of incredible power sweep across the rocky terrain so frequently that they have shaped ecology and civilization alike. Animals hide in shells, trees pull in branches, and grass retracts into the soilless ground. Cities are built only where the topography offers shelter. It has been centuries since the fall of the ten consecrated orders known as the Knights Radiant, but their Shardblades and Shardplate remain: mystical swords and suits of armor that transform ordinary men into near-invincible warriors. Men trade kingdoms for Shardblades. Wars were fought for them, and won by them. One such war rages on a ruined landscape called the Shattered Plains. There, Kaladin, who traded his medical apprenticeship for a spear to protect his little brother, has been reduced to slavery. In a war that makes no sense, where ten armies fight separately against a single foe, he struggles to save his men and to fathom the leaders who consider them expendable. Brightlord Dalinar Kholin commands one of those other armies. Like his brother, the late king, he is fascinated by an ancient text called The Way of Kings. Troubled by over-powering visions of ancient times and the Knights Radiant, he has begun to doubt his own sanity. Across the ocean, an untried young woman named Shallan seeks to train under an eminent scholar and notorious heretic, Dalinar's niece, Jasnah. Though she genuinely loves learning, Shallan's motives are less than pure. As she plans a daring theft, her research for Jasnah hints at secrets of the Knights Radiant and the true cause of the war. The result of over ten years of planning, writing, and world-building, The Way of Kings is but the opening movement of the Stormlight Archive, a bold masterpiece in the making. Speak again the ancient oaths: Life before death. Strength before weakness. Journey before Destination. and return to men the Shards they once bore. The Knights Radiant must stand again. Other Tor books by Brandon Sanderson The Cosmere The Stormlight Archive The Way of Kings Words of Radiance Edgedancer (Novella) Oathbringer The Mistborn trilogy Mistborn: The Final Empire The Well of Ascension The Hero of Ages Mistborn: The Wax and Wayne series Alloy of Law Shadows of Self Bands of Mourning Collection Arcanum Unbounded Other Cosmere novels Elantris Warbreaker The Alcatraz vs. the Evil Librarians series Alcatraz vs. the Evil Librarians The Scrivener's Bones The Knights of Crystallia The Shattered Lens The Dark Talent The Rithmatist series The Rithmatist Other books by Brandon Sanderson The Reckoners Steelheart Firefight Calamity At the Publisher's request, this title is being sold without Digital Rights Management Software (DRM) applied"
-                />
+                android:elevation="6dp"
+                >
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="#1E000000"
+                        android:gravity="center_vertical"
+                        android:text="@string/description"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/open_description_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_arrow_downward"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/open_description_arrow"
+                        >
+
+                        <TextView
+                            android:id="@+id/book_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/book_product_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/book_description_card_view"
+                android:layout_margin="8dp"
+                android:animateLayoutChanges="true"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="#1E000000"
+                        android:gravity="center_vertical"
+                        android:text="@string/product_information"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/open_information_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_arrow_downward"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/book_product_information_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/open_information_arrow"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:id="@+id/book_product_information_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/book_product_information_industry_identifier"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/book_product_information_release_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/book_product_information_page_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/book_product_information_publisher"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progress_bar"

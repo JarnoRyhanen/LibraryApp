@@ -50,7 +50,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
                 itemAnimator = null
             }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.books.collect {
+                viewModel.books.collectLatest {
                     bookAdapter.submitData(it)
                 }
             }

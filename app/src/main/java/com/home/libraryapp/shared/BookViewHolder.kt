@@ -32,7 +32,7 @@ class BookViewHolder(
                 ?: ""
 
             val fixedUri = uri.replaceFirst("http", "https")
-
+            Log.d(TAG, "bind: ${bookObject.volumeInfo.title} $uri    ${bookObject.volumeInfo.previewLink}" )
             Glide.with(itemView)
                 .load(fixedUri)
                 .fitCenter()

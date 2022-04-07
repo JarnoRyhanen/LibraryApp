@@ -2,6 +2,9 @@ package com.home.libraryapp.features.details
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,6 +17,8 @@ import com.bumptech.glide.request.target.Target
 import com.home.libraryapp.R
 import com.home.libraryapp.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+
+private const val TAG = "DetailsFragment"
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment(R.layout.fragment_details) {
@@ -28,11 +33,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binging.apply {
             val book = args.book
 
-            val uri = book.volumeInfo.imageLinks?.thumbnail
-                ?: book.volumeInfo.imageLinks?.smallThumbnail
-                ?: ""
+            var uri = ""
+            if (book.volumeInfo.imageLinks != null) {
+                 uri = book.volumeInfo.imageLinks.thumbnail
+                    ?: book.volumeInfo.imageLinks.smallThumbnail
+                    ?: ""
+            }
 
-            val fixedUri = uri.replaceFirst("http", "https")
+           val fixedUri = if (uri.isNotEmpty()) uri.replaceFirst("http", "https") else null
 
             Glide.with(this@DetailsFragment)
                 .load(fixedUri)
@@ -62,7 +70,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         bookAuthor.isVisible = !book.volumeInfo.authors.isNullOrEmpty()
                         bookRatingImage.isVisible = book.volumeInfo.averageRating != null
                         bookRating.isVisible = book.volumeInfo.averageRating != null
-                        bookDescription.isVisible = book.volumeInfo.description != null
                         return false
                     }
                 })
@@ -94,8 +101,60 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     5.0F -> bookRatingImage.setImageResource(R.drawable.five_out_of_five)
                 }
             }
-            if (!book.volumeInfo.description.isNullOrEmpty()) bookDescription.text =
-                book.volumeInfo.description
+
+            openDescriptionArrow.setOnClickListener {
+                if (bookDescription.visibility == View.VISIBLE) {
+                    TransitionManager.beginDelayedTransition(
+                        bookDescriptionCardView,
+                        AutoTransition()
+                    )
+                    bookDescription.visibility = View.GONE
+                } else {
+                    TransitionManager.beginDelayedTransition(
+                        bookDescriptionCardView,
+                        AutoTransition()
+                    )
+                    bookDescription.visibility = View.VISIBLE
+                    if (!book.volumeInfo.description.isNullOrEmpty()) {
+                        bookDescription.text = book.volumeInfo.description
+                    }
+                }
+            }
+            openInformationArrow.setOnClickListener {
+                if (bookProductInformationLayout.visibility == View.VISIBLE) {
+                    TransitionManager.beginDelayedTransition(
+                        bookProductInformation,
+                        AutoTransition()
+                    )
+                    bookProductInformationLayout.visibility = View.GONE
+                } else {
+                    TransitionManager.beginDelayedTransition(
+                        bookProductInformation,
+                        AutoTransition()
+                    )
+                    bookProductInformationLayout.visibility = View.VISIBLE
+                    bookProductInformationAuthor.text = authors
+
+                    var industryIdentifier = ""
+                    if (!book.volumeInfo.industryIdentifiers.isNullOrEmpty()) {
+                        book.volumeInfo.industryIdentifiers.indices.forEach { index ->
+                            if (book.volumeInfo.industryIdentifiers[index].type == "ISBN_13") ("ISBN " + book.volumeInfo.industryIdentifiers[index].identifier).also {
+                                industryIdentifier = it
+                            } else if (book.volumeInfo.industryIdentifiers[index].type == "OTHER") book.volumeInfo.industryIdentifiers[index].identifier.also {
+                                industryIdentifier = it
+                            }
+                        }
+                        if (industryIdentifier != "") ", $industryIdentifier" else ""
+                    } else {
+                        Log.e(TAG, "bind: This object does not have industry identifiers")
+                    }
+
+                    bookProductInformationIndustryIdentifier.text = industryIdentifier
+                    bookProductInformationReleaseDate.text = String.format("Published: ${book.volumeInfo.publishedDate}")
+                    bookProductInformationPageCount.text = String.format("Number of pages: ${book.volumeInfo.pageCount.toString()}")
+                    bookProductInformationPublisher.text = String.format("Publisher: ${book.volumeInfo.publisher}")
+                }
+            }
         }
     }
 
