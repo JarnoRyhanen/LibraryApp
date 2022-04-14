@@ -76,15 +76,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 .into(imageView)
 
             bookTitle.text = book.volumeInfo.title
-            bookSubtitle.text = book.volumeInfo.subtitle
+            bookSubtitle.text = book.volumeInfo.subtitle ?: ""
 
             var authors = "Author: "
             if (!book.volumeInfo.authors.isNullOrEmpty()) {
                 for (author in book.volumeInfo.authors)
                     authors += if (book.volumeInfo.authors.size == 1) "$author  "
                     else "$author, "
+                bookAuthor.text = authors.dropLast(2)
             }
-            bookAuthor.text = authors.dropLast(2)
 
             if (book.volumeInfo.averageRating != null) {
                 when (book.volumeInfo.averageRating) {
@@ -151,11 +151,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                     bookProductInformationIndustryIdentifier.text = industryIdentifier
                     bookProductInformationReleaseDate.text = String.format("Published: ${book.volumeInfo.publishedDate}")
-                    bookProductInformationPageCount.text = String.format("Number of pages: ${book.volumeInfo.pageCount.toString()}")
+                    bookProductInformationPageCount.text = String.format("Number of pages: ${book.volumeInfo.pageCount}")
                     bookProductInformationPublisher.text = String.format("Publisher: ${book.volumeInfo.publisher}")
                 }
             }
         }
     }
-
 }

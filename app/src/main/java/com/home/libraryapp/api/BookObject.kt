@@ -12,8 +12,8 @@ data class BookObject(
     data class VolumeInfo(
         val title: String,
         val subtitle: String?,
-        val authors: List<String>,
-        val publisher: String,
+        val authors: List<String>?,
+        val publisher: String?,
         val publishedDate: String,
         val industryIdentifiers: List<IndustryIdentifiers>?,
         val description: String?,
