@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.home.libraryapp.R
-import com.home.libraryapp.api.BookObject
+import com.home.libraryapp.api.BookObjectDto
 import com.home.libraryapp.databinding.ItemBookBinding
 
 private const val TAG = "BookViewHolder"
@@ -25,7 +25,7 @@ class BookViewHolder(
         }
     }
 
-    fun bind(bookObject: BookObject) {
+    fun bind(bookObject: BookObjectDto) {
         binding.apply {
             val uri = bookObject.volumeInfo.imageLinks?.thumbnail
                 ?: bookObject.volumeInfo.imageLinks?.smallThumbnail

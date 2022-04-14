@@ -15,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.home.libraryapp.R
 import com.home.libraryapp.databinding.FragmentBookSearchBinding
+import com.home.libraryapp.util.onQueryTextSubmit
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.log
@@ -83,20 +84,11 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    binding.recyclerView.scrollToPosition(0)
-                    viewModel.searchBooks(query)
-                    searchView.clearFocus()
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
+        searchView.onQueryTextSubmit { query ->
+            binding.recyclerView.scrollToPosition(0)
+            viewModel.searchBooks(query)
+            searchView.clearFocus()
+        }
     }
 
     override fun onDestroy() {

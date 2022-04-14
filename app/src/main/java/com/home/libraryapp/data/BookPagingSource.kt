@@ -3,7 +3,7 @@ package com.home.libraryapp.data
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.home.libraryapp.api.BookObject
+import com.home.libraryapp.api.BookObjectDto
 import com.home.libraryapp.api.BooksApi
 import retrofit2.HttpException
 import java.io.IOException
@@ -13,9 +13,9 @@ private const val BOOK_STARTING_PAGE_INDEX = 1
 class BookPagingSource(
     private val booksApi: BooksApi,
     private val query: String
-) : PagingSource<Int, BookObject>() {
+) : PagingSource<Int, BookObjectDto>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookObject> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookObjectDto> {
         val position = params.key ?: BOOK_STARTING_PAGE_INDEX
         Log.d("searchbooksfragment", "onViewCreated: THIS FRAGMENT IS RECREATED")
         val startIndex = if (position == 1) {
@@ -40,7 +40,7 @@ class BookPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, BookObject>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, BookObjectDto>): Int? {
         return state.anchorPosition
     }
 }

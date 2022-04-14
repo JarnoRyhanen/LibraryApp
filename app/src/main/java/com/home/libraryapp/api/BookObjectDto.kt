@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class BookObject(
+data class BookObjectDto(
     val id: String,
     val volumeInfo: VolumeInfo
 ) : Parcelable {
