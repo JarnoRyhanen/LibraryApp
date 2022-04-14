@@ -2,10 +2,12 @@ package com.home.libraryapp.features.searchbooks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
 import com.home.libraryapp.data.BookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
@@ -14,10 +16,13 @@ class SearchBooksViewModel @Inject constructor(
     private val repository: BookRepository
 ) : ViewModel() {
 
-    private val currentQuery = MutableStateFlow(DEFAULT_QUERY)
+    private val currentQuery = MutableStateFlow<String?>(DEFAULT_QUERY)
 
+    @ExperimentalPagingApi
     val books = currentQuery.flatMapLatest { queryString ->
-        repository.getSearchResults(queryString).cachedIn(viewModelScope)
+        queryString?.let {
+            repository.getSearchResultsPaged(queryString).cachedIn(viewModelScope)
+        } ?: emptyFlow()
     }
 
     fun searchBooks(query: String) {

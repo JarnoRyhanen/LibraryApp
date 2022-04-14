@@ -11,12 +11,11 @@ interface BooksApi {
         const val API_KEY = BuildConfig.LIBRARY_API_KEY
     }
 
-    @GET("volumes?key=$API_KEY")
+    @GET("volumes?key=$API_KEY&printType=books")
     suspend fun searchNews(
         @Query("q") searchQuery: String,
         @Query("startIndex") startIndex: Int,
-        @Query("maxResults") pageSize: Int,
-        @Query("printType") printType: String
+        @Query("maxResults") pageSize: Int
     ) : BooksResponse
 
 }

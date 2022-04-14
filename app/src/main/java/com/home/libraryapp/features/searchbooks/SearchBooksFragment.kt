@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.home.libraryapp.R
@@ -20,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.log
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
 
@@ -48,11 +50,12 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
                 )
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(requireContext())
-                itemAnimator = null
+                itemAnimator?.changeDuration = 0
             }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.books.collectLatest {
-                    bookAdapter.submitData(it)
+                viewModel.books.collectLatest { data ->
+                    textViewInstructions.isVisible = false
+                    bookAdapter.submitData(data)
                 }
             }
             bookAdapter.addLoadStateListener { loadState ->
