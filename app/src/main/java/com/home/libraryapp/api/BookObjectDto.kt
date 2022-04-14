@@ -36,7 +36,33 @@ data class BookObjectDto(
         data class IndustryIdentifiers(
             val type: String,
             val identifier: String
-        ) : Parcelable
+        ) : Parcelable {
+            val identifiers: String
+                get() = "$type $identifier"
+        }
+
+        fun getAuthors(): String {
+            var authorString = ""
+            if (authors != null) {
+                for (name in authors)
+                    authorString += "$name, "
+            }
+            return authorString.dropLast(2)
+        }
+
+        fun getIdentifiers(): String {
+            var identifier = ""
+            if (industryIdentifiers != null) {
+                for (i in industryIdentifiers) {
+                    if (i.type == "ISBN_13") {
+                        identifier = "ISBN: ${i.identifier}"
+                    } else if (i.type == "OTHER") {
+                        identifier = i.identifiers
+                    }
+                }
+            }
+            return identifier
+        }
     }
 }
 

@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -33,14 +32,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binging.apply {
             val book = args.book
 
-            var uri = ""
-            if (book.volumeInfo.imageLinks != null) {
-                 uri = book.volumeInfo.imageLinks.thumbnail
-                    ?: book.volumeInfo.imageLinks.smallThumbnail
-                    ?: ""
-            }
+            val uri = book.bookThumbnail
+                ?: book.bookSmallThumbnail
+                ?: ""
 
-           val fixedUri = if (uri.isNotEmpty()) uri.replaceFirst("http", "https") else null
+            val fixedUri = if (uri.isNotEmpty()) uri.replaceFirst("http", "https") else null
 
             Glide.with(this@DetailsFragment)
                 .load(fixedUri)
@@ -66,28 +62,28 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     ): Boolean {
                         progressBar.isVisible = false
                         bookTitle.isVisible = true
-                        bookSubtitle.isVisible = book.volumeInfo.subtitle != null
-                        bookAuthor.isVisible = !book.volumeInfo.authors.isNullOrEmpty()
-                        bookRatingImage.isVisible = book.volumeInfo.averageRating != null
-                        bookRating.isVisible = book.volumeInfo.averageRating != null
+                        bookDescription.isVisible = !book.bookDescription.isNullOrEmpty()
+                        bookSubtitle.isVisible = book.bookSubtitle != null
+                        bookAuthor.isVisible = !book.bookAuthors.isNullOrEmpty()
+                        bookRatingImage.isVisible = book.bookAverageRating != null
+                        bookRating.isVisible = book.bookAverageRating != null
+
+                        bookProductInformationAuthor.isVisible = !book.bookAuthors.isNullOrEmpty()
+                        bookProductInformationIndustryIdentifier.isVisible = !book.industryIdentifiers.isNullOrEmpty()
+                        bookProductInformationReleaseDate.isVisible = !book.bookPublishedDate.isNullOrEmpty()
+                        bookProductInformationPageCount.isVisible = book.bookPageCount != null
+                        bookProductInformationPublisher.isVisible = !book.bookPublisher.isNullOrEmpty()
                         return false
                     }
                 })
                 .into(imageView)
 
-            bookTitle.text = book.volumeInfo.title
-            bookSubtitle.text = book.volumeInfo.subtitle ?: ""
+            bookTitle.text = book.bookTitle
+            bookSubtitle.text = book.bookSubtitle
+            bookAuthor.text = book.bookAuthors
 
-            var authors = "Author: "
-            if (!book.volumeInfo.authors.isNullOrEmpty()) {
-                for (author in book.volumeInfo.authors)
-                    authors += if (book.volumeInfo.authors.size == 1) "$author  "
-                    else "$author, "
-                bookAuthor.text = authors.dropLast(2)
-            }
-
-            if (book.volumeInfo.averageRating != null) {
-                when (book.volumeInfo.averageRating) {
+            if (book.bookAverageRating != null) {
+                when (book.bookAverageRating) {
                     0.0F -> bookRatingImage.setImageResource(R.drawable.zero_out_of_five)
                     0.5F -> bookRatingImage.setImageResource(R.drawable.zero_point_five_out_of_five)
                     1.0F -> bookRatingImage.setImageResource(R.drawable.one_out_of_five)
@@ -115,8 +111,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         AutoTransition()
                     )
                     bookDescription.visibility = View.VISIBLE
-                    if (!book.volumeInfo.description.isNullOrEmpty()) {
-                        bookDescription.text = book.volumeInfo.description
+                    if (!book.bookDescription.isNullOrEmpty()) {
+                        bookDescription.text = book.bookDescription
                     }
                 }
             }
@@ -133,28 +129,18 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         AutoTransition()
                     )
                     bookProductInformationLayout.visibility = View.VISIBLE
-                    bookProductInformationAuthor.text = authors
+                    bookProductInformationAuthor.text = book.bookAuthors
 
-                    var industryIdentifier = ""
-                    if (!book.volumeInfo.industryIdentifiers.isNullOrEmpty()) {
-                        book.volumeInfo.industryIdentifiers.indices.forEach { index ->
-                            if (book.volumeInfo.industryIdentifiers[index].type == "ISBN_13") ("ISBN " + book.volumeInfo.industryIdentifiers[index].identifier).also {
-                                industryIdentifier = it
-                            } else if (book.volumeInfo.industryIdentifiers[index].type == "OTHER") book.volumeInfo.industryIdentifiers[index].identifier.also {
-                                industryIdentifier = it
-                            }
-                        }
-                        if (industryIdentifier != "") ", $industryIdentifier" else ""
-                    } else {
-                        Log.e(TAG, "bind: This object does not have industry identifiers")
-                    }
-
-                    bookProductInformationIndustryIdentifier.text = industryIdentifier
-                    bookProductInformationReleaseDate.text = String.format("Published: ${book.volumeInfo.publishedDate}")
-                    bookProductInformationPageCount.text = String.format("Number of pages: ${book.volumeInfo.pageCount}")
-                    bookProductInformationPublisher.text = String.format("Publisher: ${book.volumeInfo.publisher}")
+                    bookProductInformationIndustryIdentifier.text = book.industryIdentifiers
+                    bookProductInformationReleaseDate.text =
+                        String.format("Published: ${book.bookPublishedDate}")
+                    bookProductInformationPageCount.text =
+                        String.format("Number of pages: ${book.bookPageCount}")
+                    bookProductInformationPublisher.text =
+                        String.format("Publisher: ${book.bookPublisher}")
                 }
+            }
             }
         }
     }
-}
+

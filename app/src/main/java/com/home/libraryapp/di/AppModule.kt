@@ -1,6 +1,9 @@
 package com.home.libraryapp.di
 
+import android.app.Application
+import androidx.room.Room
 import com.home.libraryapp.api.BooksApi
+import com.home.libraryapp.data.BooksDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +29,11 @@ object AppModule {
     @Singleton
     fun provideNewsApi(retrofit: Retrofit): BooksApi =
         retrofit.create(BooksApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDatabase(app: Application): BooksDatabase =
+        Room.databaseBuilder(app, BooksDatabase::class.java, "books_database")
+            .fallbackToDestructiveMigration()
+            .build()
 }

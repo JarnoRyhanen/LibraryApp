@@ -6,17 +6,19 @@ import com.home.libraryapp.api.BooksApi
 import javax.inject.Inject
 
 class BookRepository @Inject constructor(
-    private val booksApi: BooksApi
+    private val booksApi: BooksApi,
+    private val booksDatabase: BooksDatabase
 ) {
+    private val booksDao = booksDatabase.booksDao()
 
-fun getSearchResults(query: String) =
-    Pager(
-        config = PagingConfig(
-            pageSize = 20,
-            maxSize = 100,
-            enablePlaceholders = false,
-            initialLoadSize = 40
-        ),
-        pagingSourceFactory = { BookPagingSource(booksApi, query) }
-    ).flow
+    fun getSearchResults(query: String) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = false,
+                initialLoadSize = 40
+            ),
+            pagingSourceFactory = { BookPagingSource(booksApi, query) }
+        ).flow
 }

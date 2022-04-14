@@ -1,11 +1,10 @@
 package com.home.libraryapp.shared
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.home.libraryapp.R
-import com.home.libraryapp.api.BookObjectDto
+import com.home.libraryapp.data.BookObject
 import com.home.libraryapp.databinding.ItemBookBinding
 
 private const val TAG = "BookViewHolder"
@@ -25,14 +24,13 @@ class BookViewHolder(
         }
     }
 
-    fun bind(bookObject: BookObjectDto) {
+    fun bind(bookObject: BookObject) {
         binding.apply {
-            val uri = bookObject.volumeInfo.imageLinks?.thumbnail
-                ?: bookObject.volumeInfo.imageLinks?.smallThumbnail
+            val uri = bookObject.bookThumbnail
+                ?: bookObject.bookSmallThumbnail
                 ?: ""
 
             val fixedUri = uri.replaceFirst("http", "https")
-            Log.d(TAG, "bind: ${bookObject.volumeInfo.title} $uri    ${bookObject.volumeInfo.previewLink}" )
             Glide.with(itemView)
                 .load(fixedUri)
                 .fitCenter()
@@ -40,36 +38,14 @@ class BookViewHolder(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageView)
 
-            var authors = ""
-            if (!bookObject.volumeInfo.authors.isNullOrEmpty()) {
-                for (author in bookObject.volumeInfo.authors)
-                    authors += if (bookObject.volumeInfo.authors.size == 1) "  $author"
-                    else ", $author"
-            }
-            titleTextView.text = bookObject.volumeInfo.title
-            textViewAuthor.text = authors.drop(2)
+            titleTextView.text = bookObject.bookTitle
+            textViewAuthor.text = bookObject.bookAuthors
 
-            var industryIdentifier = ""
+            dataTextView.text = String.format("${bookObject.bookPublishedDate}, ${bookObject.industryIdentifiers}")
 
-            dataTextView.text = String.format(
-                bookObject.volumeInfo.publishedDate +
-                        if (!bookObject.volumeInfo.industryIdentifiers.isNullOrEmpty()) {
-                            bookObject.volumeInfo.industryIdentifiers.indices.forEach { index ->
-                                if (bookObject.volumeInfo.industryIdentifiers[index].type == "ISBN_13") ("ISBN " + bookObject.volumeInfo.industryIdentifiers[index].identifier).also {
-                                    industryIdentifier = it
-                                } else if (bookObject.volumeInfo.industryIdentifiers[index].type == "OTHER") bookObject.volumeInfo.industryIdentifiers[index].identifier.also {
-                                    industryIdentifier = it
-                                }
-                            }
-                            if (industryIdentifier != "") ", $industryIdentifier" else ""
-                        } else {
-                            Log.e(TAG, "bind: This object does not have industry identifiers")
-                        }
-            )
-
-            if (bookObject.volumeInfo.averageRating != null) {
-                ratingTextView.text = String.format("${bookObject.volumeInfo.averageRating}/5")
-                when (bookObject.volumeInfo.averageRating) {
+            if (bookObject.bookAverageRating != null) {
+                ratingTextView.text = String.format("${bookObject.bookAverageRating}/5")
+                when (bookObject.bookAverageRating) {
                     0.0F -> imageViewRating.setImageResource(R.drawable.zero_out_of_five)
                     0.5F -> imageViewRating.setImageResource(R.drawable.zero_point_five_out_of_five)
                     1.0F -> imageViewRating.setImageResource(R.drawable.one_out_of_five)

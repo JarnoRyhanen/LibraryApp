@@ -1,5 +1,5 @@
 package com.home.libraryapp.api
 
 data class BooksResponse(
- val items: List<BookObjectDto>?
+ val items: List<BookObjectDto>
 )

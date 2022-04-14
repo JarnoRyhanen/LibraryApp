@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.home.libraryapp.api.BookObjectDto
+import com.home.libraryapp.data.BookObject
 import com.home.libraryapp.databinding.ItemBookBinding
 import com.home.libraryapp.shared.BookComparator
 import com.home.libraryapp.shared.BookViewHolder
 
 class BookAdapter(
-    private val onItemClick: (BookObjectDto) -> Unit
-) : PagingDataAdapter<BookObjectDto, BookViewHolder>(BookComparator()) {
+    private val onItemClick: (BookObject) -> Unit
+) : PagingDataAdapter<BookObject, BookViewHolder>(BookComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
