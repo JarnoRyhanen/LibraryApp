@@ -1,6 +1,9 @@
 package com.home.libraryapp.data
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -10,9 +13,12 @@ interface BooksDao {
     fun getAllSearchedBooks(): Flow<List<BookObject>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBooks(bookObject: List<BookObject>)
+    suspend fun insertSearchResults(searchResults: List<SearchResults>)
 
-    @Query("DELETE FROM search_results")
-    suspend fun deleteAllSearchedBooks()
+    @Query("SELECT MAX(queryPosition) FROM search_results WHERE searchQuery = :searchQuery")
+    suspend fun getLastQueryPosition(searchQuery: String): Int?
+
+    @Query("DELETE FROM search_results WHERE searchQuery = :query")
+    suspend fun deleteSearchedResultsForQuery(query: String)
 
 }

@@ -10,4 +10,5 @@
     <string name="rating">Rating:</string>
     <string name="product_information">Product information</string>
     <string name="description">Description</string>
+    <string name="unknown_error_occurred">Unknown error occurred</string>
 </resources>

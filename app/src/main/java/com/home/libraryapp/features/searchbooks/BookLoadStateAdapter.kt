@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.home.libraryapp.R
 import com.home.libraryapp.databinding.BookLoadStateFooterBinding
 
 class BookLoadStateAdapter(
@@ -35,8 +36,13 @@ class BookLoadStateAdapter(
         fun bind(loadState: LoadState) {
             binding.apply {
                 progressBar.isVisible = loadState is LoadState.Loading
-                buttonRetry.isVisible = loadState !is LoadState.Loading
-                textViewError.isVisible = loadState !is LoadState.Loading
+                buttonRetry.isVisible = loadState is LoadState.Error
+                textViewError.isVisible = loadState is LoadState.Error
+
+                if (loadState is LoadState.Error) {
+                    textViewError.text = loadState.error.localizedMessage ?:
+                    binding.root.context.getString(R.string.unknown_error_occurred)
+                }
             }
         }
     }
