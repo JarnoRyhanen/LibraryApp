@@ -46,46 +46,49 @@ class SearchBooksRemoteMediator(
             val response = booksApi.searchBooks(searchQuery, index, 40)
             val serverSearchResults = response.items
 
-            val searchResultBooks = serverSearchResults.map { serverBookObject ->
-                BookObject(
-                    bookId = serverBookObject.id,
-                    bookTitle = serverBookObject.volumeInfo.title,
-                    bookDescription = serverBookObject.volumeInfo.description,
-                    bookSubtitle = serverBookObject.volumeInfo.subtitle,
-                    bookAuthors = serverBookObject.volumeInfo.getAuthors(),
-                    bookPublisher = serverBookObject.volumeInfo.publisher,
-                    bookPublishedDate = serverBookObject.volumeInfo.publishedDate,
-                    bookPageCount = serverBookObject.volumeInfo.pageCount,
-                    bookAverageRating = serverBookObject.volumeInfo.averageRating,
-                    bookRatingsCount = serverBookObject.volumeInfo.ratingsCount,
-                    industryIdentifiers = serverBookObject.volumeInfo.getIdentifiers(),
-                    bookPreviewLink = serverBookObject.volumeInfo.previewLink,
-                    bookInfoLink = serverBookObject.volumeInfo.infoLink,
-                    bookCanonicalVolumeLink = serverBookObject.volumeInfo.canonicalVolumeLink,
-                    bookSmallThumbnail = serverBookObject.volumeInfo.imageLinks?.smallThumbnail,
-                    bookThumbnail = serverBookObject.volumeInfo.imageLinks?.thumbnail
-                )
-            }
-            booksDatabase.withTransaction {
-                if (loadType == LoadType.REFRESH) {
-                    booksDao.deleteSearchedResultsForQuery(searchQuery)
+            if (serverSearchResults != null) {
+                val searchResultBooks = serverSearchResults.map { serverBookObject ->
+                    BookObject(
+                        bookId = serverBookObject.id,
+                        bookTitle = serverBookObject.volumeInfo.title,
+                        bookDescription = serverBookObject.volumeInfo.description,
+                        bookSubtitle = serverBookObject.volumeInfo.subtitle,
+                        bookAuthors = serverBookObject.volumeInfo.getAuthors(),
+                        bookPublisher = serverBookObject.volumeInfo.publisher,
+                        bookPublishedDate = serverBookObject.volumeInfo.publishedDate,
+                        bookPageCount = serverBookObject.volumeInfo.pageCount,
+                        bookAverageRating = serverBookObject.volumeInfo.averageRating,
+                        bookRatingsCount = serverBookObject.volumeInfo.ratingsCount,
+                        industryIdentifiers = serverBookObject.volumeInfo.getIdentifiers(),
+                        bookPreviewLink = serverBookObject.volumeInfo.previewLink,
+                        bookInfoLink = serverBookObject.volumeInfo.infoLink,
+                        bookCanonicalVolumeLink = serverBookObject.volumeInfo.canonicalVolumeLink,
+                        bookSmallThumbnail = serverBookObject.volumeInfo.imageLinks?.smallThumbnail,
+                        bookThumbnail = serverBookObject.volumeInfo.imageLinks?.thumbnail
+                    )
                 }
 
-                val lastQueryPosition = booksDao.getLastQueryPosition(searchQuery) ?: 0
-                var queryPosition = lastQueryPosition + 1
+                booksDatabase.withTransaction {
+                    if (loadType == LoadType.REFRESH) {
+                        booksDao.deleteSearchedResultsForQuery(searchQuery)
+                    }
 
-                val searchResults = searchResultBooks.map {
-                    SearchResults(searchQuery, it.bookId, queryPosition++)
+                    val lastQueryPosition = booksDao.getLastQueryPosition(searchQuery) ?: 0
+                    var queryPosition = lastQueryPosition + 1
+
+                    val searchResults = searchResultBooks.map {
+                        SearchResults(searchQuery, it.bookId, queryPosition++)
+                    }
+                    val nextPageKey = page + 1
+
+                    booksDao.insertBooks(searchResultBooks)
+                    booksDao.insertSearchResults(searchResults)
+                    searchQueryRemoteKeyDao.insertRemoteKey(
+                        SearchQueryRemoteKey(searchQuery, nextPageKey)
+                    )
                 }
-                val nextPageKey = page + 1
-
-                booksDao.insertBooks(searchResultBooks)
-                booksDao.insertSearchResults(searchResults)
-                searchQueryRemoteKeyDao.insertRemoteKey(
-                    SearchQueryRemoteKey(searchQuery, nextPageKey)
-                )
             }
-            return MediatorResult.Success(endOfPaginationReached = serverSearchResults.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = serverSearchResults.isNullOrEmpty())
         } catch (exception: IOException) {
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {

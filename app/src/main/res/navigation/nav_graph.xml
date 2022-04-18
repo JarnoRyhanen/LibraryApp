@@ -18,12 +18,6 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/recommendationsFragment"
-        android:name="com.home.libraryapp.features.recommendations.RecommendationsFragment"
-        android:label="@string/recommendations"
-        tools:layout="@layout/fragment_books_recommendations"
-        />
-    <fragment
         android:id="@+id/detailsFragment"
         android:name="com.home.libraryapp.features.details.DetailsFragment"
         android:label="Details"

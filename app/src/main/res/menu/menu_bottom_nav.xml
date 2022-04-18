@@ -6,9 +6,4 @@
         android:title="@string/search"
         android:icon="@drawable/ic_search"
         />
-    <item
-        android:id="@+id/recommendationsFragment"
-        android:title="@string/recommendations"
-        android:icon="@drawable/ic_book_online"
-        />
 </menu>

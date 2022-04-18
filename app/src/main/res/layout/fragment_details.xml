@@ -50,6 +50,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:layout_margin="8dp"
                 tools:text="Book One of the Stormlight Archive"
                 />
 
