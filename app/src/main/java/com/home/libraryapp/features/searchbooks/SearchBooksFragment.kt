@@ -54,10 +54,19 @@ class SearchBooksFragment : Fragment(R.layout.fragment_book_search) {
             }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.books.collectLatest { data ->
-                    textViewInstructions.isVisible = false
                     bookAdapter.submitData(data)
                 }
             }
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.hasCurrentQuery.collect { hasCurrentQuery ->
+
+                    textViewInstructions.isVisible = !hasCurrentQuery
+                    if (!hasCurrentQuery) {
+                        recyclerView.isVisible = false
+                    }
+                }
+            }
+
             bookAdapter.addLoadStateListener { loadState ->
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 recyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
