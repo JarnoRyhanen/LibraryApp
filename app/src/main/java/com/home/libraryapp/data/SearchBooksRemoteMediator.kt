@@ -43,7 +43,7 @@ class SearchBooksRemoteMediator(
 
         try {
             Log.d(TAG, "index: $index, page: $page")
-            val response = booksApi.searchNews(searchQuery, index, 40)
+            val response = booksApi.searchBooks(searchQuery, index, 40)
             val serverSearchResults = response.items
 
             val searchResultBooks = serverSearchResults.map { serverBookObject ->

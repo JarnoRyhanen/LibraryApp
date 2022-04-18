@@ -1,9 +1,9 @@
 package com.home.libraryapp.features.details
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -63,15 +63,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         progressBar.isVisible = false
                         bookTitle.isVisible = true
                         bookDescription.isVisible = !book.bookDescription.isNullOrEmpty()
-                        bookSubtitle.isVisible = book.bookSubtitle != null
+                        bookSubtitle.isVisible = !book.bookSubtitle.isNullOrEmpty()
                         bookAuthor.isVisible = !book.bookAuthors.isNullOrEmpty()
-                        bookRatingImage.isVisible = book.bookAverageRating != null
-                        bookRating.isVisible = book.bookAverageRating != null
+                        bookRatingImage.isVisible = !book.bookAverageRating.toString().isNullOrEmpty()
+                        bookRating.isVisible = !book.bookAverageRating.toString().isNullOrEmpty()
 
                         bookProductInformationAuthor.isVisible = !book.bookAuthors.isNullOrEmpty()
                         bookProductInformationIndustryIdentifier.isVisible = !book.industryIdentifiers.isNullOrEmpty()
                         bookProductInformationReleaseDate.isVisible = !book.bookPublishedDate.isNullOrEmpty()
-                        bookProductInformationPageCount.isVisible = book.bookPageCount != null
+                        bookProductInformationPageCount.isVisible = book.bookPageCount != null || book.bookPageCount != 0
                         bookProductInformationPublisher.isVisible = !book.bookPublisher.isNullOrEmpty()
                         return false
                     }
@@ -98,49 +98,26 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
             }
 
-            openDescriptionArrow.setOnClickListener {
-                if (bookDescription.visibility == View.VISIBLE) {
-                    TransitionManager.beginDelayedTransition(
-                        bookDescriptionCardView,
-                        AutoTransition()
-                    )
-                    bookDescription.visibility = View.GONE
-                } else {
-                    TransitionManager.beginDelayedTransition(
-                        bookDescriptionCardView,
-                        AutoTransition()
-                    )
-                    bookDescription.visibility = View.VISIBLE
-                    if (!book.bookDescription.isNullOrEmpty()) {
-                        bookDescription.text = book.bookDescription
-                    }
-                }
-            }
-            openInformationArrow.setOnClickListener {
-                if (bookProductInformationLayout.visibility == View.VISIBLE) {
-                    TransitionManager.beginDelayedTransition(
-                        bookProductInformation,
-                        AutoTransition()
-                    )
-                    bookProductInformationLayout.visibility = View.GONE
-                } else {
-                    TransitionManager.beginDelayedTransition(
-                        bookProductInformation,
-                        AutoTransition()
-                    )
-                    bookProductInformationLayout.visibility = View.VISIBLE
-                    bookProductInformationAuthor.text = book.bookAuthors
+            bookDescription.text = book.bookDescription
+            bookProductInformationIndustryIdentifier.text = book.industryIdentifiers
+            bookProductInformationReleaseDate.text =
+                String.format("Published: ${book.bookPublishedDate}")
+            bookProductInformationPageCount.text =
+                String.format("Number of pages: ${book.bookPageCount}")
+            bookProductInformationPublisher.text =
+                String.format("Publisher: ${book.bookPublisher}")
 
-                    bookProductInformationIndustryIdentifier.text = book.industryIdentifiers
-                    bookProductInformationReleaseDate.text =
-                        String.format("Published: ${book.bookPublishedDate}")
-                    bookProductInformationPageCount.text =
-                        String.format("Number of pages: ${book.bookPageCount}")
-                    bookProductInformationPublisher.text =
-                        String.format("Publisher: ${book.bookPublisher}")
-                }
+            buttonPreview.setOnClickListener {
+                val previewUri = Uri.parse(book.bookPreviewLink)
+                val intent = Intent(Intent.ACTION_VIEW, previewUri)
+                requireActivity().startActivity(intent)
             }
+            buttonBuy.setOnClickListener {
+                val buyUri = Uri.parse(book.bookInfoLink)
+                val intent = Intent(Intent.ACTION_VIEW, buyUri)
+                requireActivity().startActivity(intent)
             }
+        }
         }
     }
 

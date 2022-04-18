@@ -12,7 +12,7 @@ interface BooksApi {
     }
 
     @GET("volumes?key=$API_KEY&printType=books")
-    suspend fun searchNews(
+    suspend fun searchBooks(
         @Query("q") searchQuery: String,
         @Query("startIndex") startIndex: Int,
         @Query("maxResults") pageSize: Int
